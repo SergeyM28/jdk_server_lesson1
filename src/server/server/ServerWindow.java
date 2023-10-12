@@ -1,4 +1,12 @@
-package server;
+// Интерфейс репозиторий
+// Класс, который реализует интерфейс "Репозиторий"
+// Сервер виндов остается
+// Появляется еще одитн класс "Сервер" и появляется интерфейс на подобии "ClientView" для графического окна, чтобы к нему могли из класса Сервер обращаться
+//
+
+package server.server;
+
+import server.client.Client;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,13 +22,13 @@ public class ServerWindow extends JFrame {
     public static final int HEIGHT = 300;
     public static final String LOG_PATH = "src/server/log.txt";
 
-    List<ClientGUI> clientGUIList;
+    List<Client> clientGUIList;
 
     JButton btnStart, btnStop;
     JTextArea log;
     boolean work;
 
-    ServerWindow(){
+    public ServerWindow(){
         clientGUIList = new ArrayList<>();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -34,26 +42,26 @@ public class ServerWindow extends JFrame {
         setVisible(true);
     }
 
-    public boolean connectUser(ClientGUI clientGUI){
+    public boolean connectUser(Client client){
         if (!work){
             return false;
         }
-        clientGUIList.add(clientGUI);
+        clientGUIList.add(client);
         return true;
     }
 
-    public String getLog() {
+    public String getHistory() {
         return readLog();
     }
 
-    public void disconnectUser(ClientGUI clientGUI){
+    public void disconnectUser(Client clientGUI){
         clientGUIList.remove(clientGUI);
         if (clientGUI != null){
             clientGUI.disconnectFromServer();
         }
     }
 
-    public void message(String text){
+    public void sendMessage(String text){
         if (!work){
             return;
         }
@@ -64,7 +72,7 @@ public class ServerWindow extends JFrame {
     }
 
     private void answerAll(String text){
-        for (ClientGUI clientGUI: clientGUIList){
+        for (Client clientGUI: clientGUIList){
             clientGUI.answer(text);
         }
     }
@@ -127,7 +135,7 @@ public class ServerWindow extends JFrame {
                     appendLog("Сервер уже был остановлен");
                 } else {
                     work = false;
-                    for (ClientGUI clientGUI: clientGUIList){
+                    for (Client clientGUI: clientGUIList){
                         disconnectUser(clientGUI);
                     }
                     appendLog("Сервер остановлен!");

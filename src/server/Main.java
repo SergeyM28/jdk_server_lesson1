@@ -1,5 +1,8 @@
 package server;
 
+import server.client.ClientGUI;
+import server.server.ServerWindow;
+
 public class Main {
     public static void main(String[] args) {
 
