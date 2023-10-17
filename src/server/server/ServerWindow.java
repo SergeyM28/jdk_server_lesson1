@@ -33,7 +33,7 @@ public class ServerWindow extends JFrame implements ServerView{
     Logger logger;
 
     public ServerWindow(){
-        this.server = new Server();
+        this.server = new Server(logger, this);
         //clientGUIList = new ArrayList<>();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
